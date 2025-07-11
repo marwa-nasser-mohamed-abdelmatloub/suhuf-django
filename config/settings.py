@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # ------------------------------------------------
     # [AMS]:- third-party apps ---------------------
-    'django_extensions',# for additional management commands and features like showurls 
+    #'django_extensions',# for additional management commands and features like showurls 
     'rest_framework',  # [AMS]:- Added for API functionality
     'rest_framework.authtoken',  # [AMS]:- For token authentication
     # ------------------------------------------------
