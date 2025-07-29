@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3)xhnuh0o3+)3a^=tg)z!2yd^8(gg3uz=dapi8#ytz6n27#5hq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -43,8 +43,15 @@ INSTALLED_APPS = [
     #'django_extensions',# for additional management commands and features like showurls 
     'rest_framework',  # [AMS]:- Added for API functionality
     'rest_framework.authtoken',  # [AMS]:- For token authentication
+<<<<<<< HEAD
 # ------------------------------------------------
 # [AMS]:- custom apps ---------------------
+=======
+    'django_filters',  # [AMS]:- For advanced filtering
+    'corsheaders',  # [AMS]:- For CORS support
+    # ------------------------------------------------
+    # [AMS]:- custom apps ---------------------
+>>>>>>> da8594f5562a6b1309a7b503ef55da9ae5644b40
     'accounts',
     'courses',
 ]
@@ -57,12 +64,24 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',  # [AMS]:- Allow reading without authentication
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
     ]
 }
 # -------------------------------
 MIDDLEWARE = [
+<<<<<<< HEAD
     'corsheaders.middleware.CorsMiddleware', # CORS middleware should be at the top
+=======
+    'corsheaders.middleware.CorsMiddleware',  # [AMS]:- CORS middleware
+>>>>>>> da8594f5562a6b1309a7b503ef55da9ae5644b40
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -148,3 +167,58 @@ MEDIA_ROOT = BASE_DIR / 'media'  # [AMS]:- Directory where uploaded files are sa
 
 # [AMS]:- Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# [AMS]:- CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # [AMS]:- For development only
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# [AMS]:- Additional CORS settings for development
+CORS_EXPOSE_HEADERS = ['*']
+CORS_PREFLIGHT_MAX_AGE = 86400
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]

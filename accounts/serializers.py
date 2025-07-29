@@ -27,3 +27,38 @@ class UserSerializer(serializers.ModelSerializer):
             # is_student=validated_data.get('is_student', True)
         )
         return user
+
+# [AMS]:- Login Serializer
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(max_length=128, write_only=True)
+
+# [AMS]:- Register Serializer
+class RegisterSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(write_only=True)
+    
+    class Meta:
+        model = CustomUser
+        fields = [
+            'username', 'email', 'password', 'password2',
+            'full_name', 'phone_number'
+        ]
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+    
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("كلمات المرور غير متطابقة")
+        return data
+    
+    def create(self, validated_data):
+        validated_data.pop('password2')
+        user = CustomUser.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            full_name=validated_data.get('full_name', ''),
+            phone_number=validated_data.get('phone_number', '')
+        )
+        return user
