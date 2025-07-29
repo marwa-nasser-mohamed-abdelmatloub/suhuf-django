@@ -43,15 +43,9 @@ INSTALLED_APPS = [
     #'django_extensions',# for additional management commands and features like showurls 
     'rest_framework',  # [AMS]:- Added for API functionality
     'rest_framework.authtoken',  # [AMS]:- For token authentication
-<<<<<<< HEAD
-# ------------------------------------------------
-# [AMS]:- custom apps ---------------------
-=======
     'django_filters',  # [AMS]:- For advanced filtering
-    'corsheaders',  # [AMS]:- For CORS support
     # ------------------------------------------------
     # [AMS]:- custom apps ---------------------
->>>>>>> da8594f5562a6b1309a7b503ef55da9ae5644b40
     'accounts',
     'courses',
 ]
@@ -77,11 +71,7 @@ REST_FRAMEWORK = {
 }
 # -------------------------------
 MIDDLEWARE = [
-<<<<<<< HEAD
-    'corsheaders.middleware.CorsMiddleware', # CORS middleware should be at the top
-=======
     'corsheaders.middleware.CorsMiddleware',  # [AMS]:- CORS middleware
->>>>>>> da8594f5562a6b1309a7b503ef55da9ae5644b40
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
