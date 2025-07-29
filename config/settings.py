@@ -38,13 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # ------------------------------------------------
-    # [AMS]:- third-party apps ---------------------
+# [AMS]:- third-party apps ---------------------
+    'corsheaders', # CORS support
     #'django_extensions',# for additional management commands and features like showurls 
     'rest_framework',  # [AMS]:- Added for API functionality
     'rest_framework.authtoken',  # [AMS]:- For token authentication
-    # ------------------------------------------------
-    # [AMS]:- custom apps ---------------------
+# ------------------------------------------------
+# [AMS]:- custom apps ---------------------
     'accounts',
     'courses',
 ]
@@ -62,6 +62,7 @@ REST_FRAMEWORK = {
 }
 # -------------------------------
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # CORS middleware should be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,6 +71,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Allow all origins for CORS (development only)
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'config.urls'
 
