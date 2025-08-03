@@ -40,7 +40,6 @@ class UserViewSet(viewsets.ModelViewSet):
             username = serializer.validated_data['username']
             password = serializer.validated_data['password']
             user = authenticate(username=username, password=password)
-            
             if user:
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({
