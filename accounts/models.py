@@ -27,14 +27,14 @@ class CustomUser(AbstractUser):
         unique=True
     )
     # [AMS]:- for future if demand to make role-based access control [as a teacher of Quran or student]
-    # is_quran_teacher = models.BooleanField(
-    #     _('is quran teacher'),
-    #     default=False
-    # )
-    # is_student = models.BooleanField(
-    #     _('is student'),
-    #     default=True
-    # )
+    is_quran_teacher = models.BooleanField(
+        _('is quran teacher'),
+        default=False
+    )
+    is_student = models.BooleanField(
+        _('is student'),
+        default=True
+    )
     
     # [AMS]:- Required fields for custom user model
     REQUIRED_FIELDS = ['email', 'full_name', 'phone_number']
