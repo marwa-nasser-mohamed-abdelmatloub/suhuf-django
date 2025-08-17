@@ -11,7 +11,7 @@ class Course(models.Model):
     
     title = models.CharField(max_length=255, verbose_name="عنوان الكورس")
     description = models.TextField(verbose_name="وصف الكورس")
-    price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="السعر")
+    price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True, verbose_name="السعر")
     image = models.ImageField(upload_to='course_images/', blank=True, null=True, verbose_name="صورة الكورس")
     duration = models.CharField(max_length=100, blank=True, null=True, verbose_name="مدة الكورس")
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner', verbose_name="مستوى الكورس")

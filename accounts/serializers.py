@@ -2,8 +2,29 @@ from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth import get_user_model
 
-# [AMS]:- User Serializer for API representation
 class UserSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+        user_id = getattr(self.instance, 'id', None)
+
+        username_qs = CustomUser.objects.filter(username=data['username'])
+        if user_id:
+            username_qs = username_qs.exclude(id=user_id)
+        if username_qs.exists():
+            raise serializers.ValidationError({"username": "اسم المستخدم مستخدم بالفعل"})
+
+        email_qs = CustomUser.objects.filter(email=data['email'])
+        if user_id:
+            email_qs = email_qs.exclude(id=user_id)
+        if email_qs.exists():
+            raise serializers.ValidationError({"email": "البريد الإلكتروني مستخدم بالفعل"})
+
+        phone_qs = CustomUser.objects.filter(phone_number=data['phone_number'])
+        if user_id:
+            phone_qs = phone_qs.exclude(id=user_id)
+        if phone_qs.exists():
+            raise serializers.ValidationError({"phone_number": "رقم الهاتف مستخدم بالفعل"})
+
+        return data
     class Meta:
         model = get_user_model()
         fields = [
@@ -31,12 +52,10 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
-# [AMS]:- Login Serializer
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     password = serializers.CharField(max_length=128, write_only=True)
 
-# [AMS]:- Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
     
@@ -52,7 +71,28 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError("كلمات المرور غير متطابقة")
+            raise serializers.ValidationError({"password2": "كلمات المرور غير متطابقة"})
+
+        user_id = getattr(self.instance, 'id', None)
+
+        username_qs = CustomUser.objects.filter(username=data['username'])
+        if user_id:
+            username_qs = username_qs.exclude(id=user_id)
+        if username_qs.exists():
+            raise serializers.ValidationError({"username": "اسم المستخدم مستخدم بالفعل"})
+
+        email_qs = CustomUser.objects.filter(email=data['email'])
+        if user_id:
+            email_qs = email_qs.exclude(id=user_id)
+        if email_qs.exists():
+            raise serializers.ValidationError({"email": "البريد الإلكتروني مستخدم بالفعل"})
+
+        phone_qs = CustomUser.objects.filter(phone_number=data['phone_number'])
+        if user_id:
+            phone_qs = phone_qs.exclude(id=user_id)
+        if phone_qs.exists():
+            raise serializers.ValidationError({"phone_number": "رقم الهاتف مستخدم بالفعل"})
+
         return data
     
     def create(self, validated_data):

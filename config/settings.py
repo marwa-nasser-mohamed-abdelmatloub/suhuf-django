@@ -12,53 +12,41 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3)xhnuh0o3+)3a^=tg)z!2yd^8(gg3uz=dapi8#ytz6n27#5hq'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
-# Application definition
-
 INSTALLED_APPS = [
-    # [AMS]:- default django apps ---------------------
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-# [AMS]:- third-party apps ---------------------
-    'corsheaders', # CORS support
-    #'django_extensions',# for additional management commands and features like showurls 
-    'rest_framework',  # [AMS]:- Added for API functionality
-    'rest_framework.authtoken',  # [AMS]:- For token authentication
-    'django_filters',  # [AMS]:- For advanced filtering
-    # ------------------------------------------------
-    # [AMS]:- custom apps ---------------------
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     'accounts',
     'courses',
+    'program',
 ]
-# [AMS]:- Custom user model
+
 AUTH_USER_MODEL = 'accounts.CustomUser'
-# [AMS]:- REST Framework settings
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # [AMS]:- Allow reading without authentication
+        'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -69,9 +57,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ]
 }
-# -------------------------------
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # [AMS]:- CORS middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +69,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Allow all origins for CORS (development only)
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'config.urls'
@@ -105,19 +92,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -134,10 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -146,25 +122,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# [AMS]:- Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # [AMS]:- For production static files
+STATIC_ROOT = BASE_DIR / 'staticfiles' 
 
-# [AMS]:- Media files (User uploaded files)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # [AMS]:- Directory where uploaded files are saved
+MEDIA_ROOT = BASE_DIR / 'media' 
 
-# [AMS]:- Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# [AMS]:- CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True  # [AMS]:- For development only
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = [
@@ -188,7 +159,6 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# [AMS]:- Additional CORS settings for development
 CORS_EXPOSE_HEADERS = ['*']
 CORS_PREFLIGHT_MAX_AGE = 86400
 

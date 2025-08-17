@@ -6,19 +6,17 @@ from django.contrib.auth import authenticate
 from .models import CustomUser
 from .serializers import UserSerializer, LoginSerializer, RegisterSerializer
 
-# [AMS]:- User ViewSet for handling all user-related operations
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
     
     def get_permissions(self):
-        if self.action in ['login', 'register']:
-            # السماح بتسجيل الدخول والتسجيل بدون تسجيل دخول
+        open_actions = ['login', 'register', 'check_email', 'check_username', 'check_phone']
+        if self.action in open_actions:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
     
-    # [AMS]:- Custom action for user registration
     @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
     def register(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -32,7 +30,6 @@ class UserViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    # [AMS]:- Custom action for user login
     @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
     def login(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -53,13 +50,11 @@ class UserViewSet(viewsets.ModelViewSet):
                 }, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    # [AMS]:- Custom action for getting current user profile
     @action(detail=False, methods=['get'])
     def me(self, request):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
     
-    # [AMS]:- Custom action for user logout
     @action(detail=False, methods=['post'])
     def logout(self, request):
         try:
@@ -67,3 +62,42 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'message': 'تم تسجيل الخروج بنجاح'})
         except:
             return Response({'message': 'تم تسجيل الخروج بنجاح'})
+
+
+    @action(detail=False, methods=['get'], url_path='check-email', permission_classes=[permissions.AllowAny])
+    def check_email(self, request):
+        email = request.query_params.get('email', None)
+        user_id = request.query_params.get('id', None)
+        if not email:
+            return Response({'available': False, 'error': 'يرجى إدخال البريد الإلكتروني'}, status=status.HTTP_400_BAD_REQUEST)
+        qs = CustomUser.objects.filter(email=email)
+        if user_id:
+            qs = qs.exclude(id=user_id)
+        exists = qs.exists()
+        return Response({'available': not exists})
+
+
+    @action(detail=False, methods=['get'], url_path='check-username', permission_classes=[permissions.AllowAny])
+    def check_username(self, request):
+        username = request.query_params.get('username', None)
+        user_id = request.query_params.get('id', None)
+        if not username:
+            return Response({'available': False, 'error': 'يرجى إدخال اسم المستخدم'}, status=status.HTTP_400_BAD_REQUEST)
+        qs = CustomUser.objects.filter(username=username)
+        if user_id:
+            qs = qs.exclude(id=user_id)
+        exists = qs.exists()
+        return Response({'available': not exists})
+
+
+    @action(detail=False, methods=['get'], url_path='check-phone', permission_classes=[permissions.AllowAny])
+    def check_phone(self, request):
+        phone = request.query_params.get('phone', None)
+        user_id = request.query_params.get('id', None)
+        if not phone:
+            return Response({'available': False, 'error': 'يرجى إدخال رقم الهاتف'}, status=status.HTTP_400_BAD_REQUEST)
+        qs = CustomUser.objects.filter(phone_number=phone)
+        if user_id:
+            qs = qs.exclude(id=user_id)
+        exists = qs.exists()
+        return Response({'available': not exists})
